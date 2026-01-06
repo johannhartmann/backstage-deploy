@@ -27,8 +27,7 @@ spec:
             - name: POSTGRES_PORT
               value: "5432"
           readinessProbe:
-            httpGet:
-              path: /api/catalog/entities?limit=1
+            tcpSocket:
               port: 7007
             initialDelaySeconds: 30
             periodSeconds: 10
