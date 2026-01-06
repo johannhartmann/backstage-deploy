@@ -28,13 +28,12 @@ spec:
               value: "5432"
           readinessProbe:
             httpGet:
-              path: /healthcheck
+              path: /api/catalog/entities?limit=1
               port: 7007
             initialDelaySeconds: 30
             periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: /healthcheck
+            tcpSocket:
               port: 7007
             initialDelaySeconds: 60
             periodSeconds: 30

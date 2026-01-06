@@ -2,7 +2,8 @@ import { createBackend } from '@backstage/backend-defaults';
 
 const backend = createBackend();
 
-backend.add(import('@backstage/plugin-app-backend'));
+// Note: plugin-app-backend removed - requires frontend app package
+// For backend-only deployment, serve static files separately
 backend.add(import('@backstage/plugin-catalog-backend'));
 backend.add(import('@backstage/plugin-scaffolder-backend'));
 backend.add(import('@backstage/plugin-techdocs-backend'));
