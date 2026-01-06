@@ -21,13 +21,19 @@ RUN corepack enable && yarn install --frozen-lockfile || yarn install
 # Copy source code
 COPY . .
 
-# Build backend
+# Build frontend app first
+RUN yarn workspace app build
+
+# Build backend (includes frontend in bundle)
 RUN yarn build:backend
 
 # Extract the bundle into /bundle
 WORKDIR /bundle
 RUN tar xzf /app/packages/backend/dist/skeleton.tar.gz && \
-    tar xzf /app/packages/backend/dist/bundle.tar.gz
+    tar xzf /app/packages/backend/dist/bundle.tar.gz && \
+    mkdir -p ./packages/app && \
+    cp -r /app/packages/app/dist ./packages/app/dist && \
+    cp /app/packages/app/package.json ./packages/app/package.json
 
 # Stage 2: Production
 FROM node:22-bookworm-slim
