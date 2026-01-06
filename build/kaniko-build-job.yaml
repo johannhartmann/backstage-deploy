@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: backstage-build
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kaniko-config
+  namespace: backstage-build
+data:
+  config.json: |
+    {
+      "auths": {},
+      "insecure-registries": ["localhost:32000", "registry.container-registry.svc.cluster.local:5000"]
+    }
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: backstage-build
+  namespace: backstage-build
+spec:
+  backoffLimit: 2
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      initContainers:
+        - name: clone
+          image: alpine/git:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              git clone https://github.com/johannhartmann/backstage-deploy.git /workspace
+              ls -la /workspace/backstage
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
+      containers:
+        - name: kaniko
+          image: gcr.io/kaniko-project/executor:latest
+          args:
+            - --dockerfile=/workspace/backstage/Dockerfile
+            - --context=/workspace/backstage
+            - --destination=localhost:32000/backstage:latest
+            - --insecure
+            - --skip-tls-verify
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
+            - name: kaniko-config
+              mountPath: /kaniko/.docker
+      restartPolicy: Never
+      volumes:
+        - name: workspace
+          emptyDir: {}
+        - name: kaniko-config
+          configMap:
+            name: kaniko-config
+            items:
+              - key: config.json
+                path: config.json

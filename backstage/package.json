@@ -1,0 +1,31 @@
+{
+  "name": "backstage",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"yarn start\" \"yarn start-backend\"",
+    "start": "yarn workspace app start",
+    "start-backend": "yarn workspace backend start",
+    "build": "backstage-cli repo build",
+    "build:backend": "yarn workspace backend build",
+    "tsc": "tsc",
+    "clean": "backstage-cli repo clean"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "devDependencies": {
+    "@backstage/cli": "^0.29.0",
+    "concurrently": "^8.0.0",
+    "typescript": "~5.4.0"
+  },
+  "resolutions": {
+    "@types/react": "^18",
+    "@types/react-dom": "^18"
+  }
+}

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: quay.io/janus-idp/backstage-showcase:latest
+          image: localhost:32000/backstage:latest
           ports:
             - containerPort: 7007
           envFrom:
