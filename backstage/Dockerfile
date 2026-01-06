@@ -24,9 +24,10 @@ COPY . .
 # Build backend
 RUN yarn build:backend
 
-# Extract the bundle
-WORKDIR /app/packages/backend/dist
-RUN tar xzf skeleton.tar.gz && tar xzf bundle.tar.gz
+# Extract the bundle into /bundle
+WORKDIR /bundle
+RUN tar xzf /app/packages/backend/dist/skeleton.tar.gz && \
+    tar xzf /app/packages/backend/dist/bundle.tar.gz
 
 # Stage 2: Production
 FROM node:22-bookworm-slim
@@ -38,8 +39,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the extracted bundle
-COPY --from=build /app/packages/backend/dist/bundle ./
+# Copy the extracted bundle (contains packages/backend/dist/index.cjs.js)
+COPY --from=build /bundle/ ./
+
+# Install production dependencies
+RUN corepack enable && yarn install --production
 
 # Copy app-config
 COPY app-config.yaml ./
@@ -50,4 +54,4 @@ ENV NODE_ENV=production
 EXPOSE 7007
 
 # Run the bundled backend
-CMD ["node", "packages/backend", "--config", "app-config.yaml"]
+CMD ["node", "packages/backend/dist/index.cjs.js", "--config", "app-config.yaml"]
