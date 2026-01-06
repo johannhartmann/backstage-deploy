@@ -23,19 +23,94 @@ backend:
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
 
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
+  gitlab:
+    - host: gitlab.com
+      token: ${GITLAB_TOKEN}
+
+auth:
+  environment: production
+  providers:
+    guest:
+      dangerouslyAllowOutsideDevelopment: true
+    github:
+      production:
+        clientId: ${GITHUB_CLIENT_ID}
+        clientSecret: ${GITHUB_CLIENT_SECRET}
+    gitlab:
+      production:
+        clientId: ${GITLAB_CLIENT_ID}
+        clientSecret: ${GITLAB_CLIENT_SECRET}
+
 catalog:
   import:
     entityFilename: catalog-info.yaml
   rules:
-    - allow: [Component, System, API, Resource, Location]
-  locations:
-    - type: file
-      target: ../examples/entities.yaml
-    - type: file
-      target: ../examples/template/template.yaml
-      rules:
-        - allow: [Template]
-    - type: file
-      target: ../examples/org.yaml
-      rules:
-        - allow: [User, Group]
+    - allow: [Component, System, API, Resource, Location, Template, User, Group]
+  providers:
+    github:
+      providerId:
+        organization: ${GITHUB_ORG}
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
+    gitlab:
+      providerId:
+        host: gitlab.com
+        orgEnabled: true
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
+
+kubernetes:
+  serviceLocatorMethod:
+    type: multiTenant
+  clusterLocatorMethods:
+    - type: config
+      clusters:
+        - url: ${KUBERNETES_URL}
+          name: local
+          authProvider: serviceAccount
+          skipTLSVerify: true
+          skipMetricsLookup: true
+          serviceAccountToken: ${KUBERNETES_TOKEN}
+
+proxy:
+  endpoints:
+    '/prometheus/api':
+      target: ${PROMETHEUS_URL}
+      changeOrigin: true
+    '/grafana/api':
+      target: ${GRAFANA_URL}
+      changeOrigin: true
+      headers:
+        Authorization: Bearer ${GRAFANA_TOKEN}
+    '/argocd/api':
+      target: ${ARGOCD_URL}
+      changeOrigin: true
+      headers:
+        Cookie: argocd.token=${ARGOCD_TOKEN}
+
+argocd:
+  baseUrl: ${ARGOCD_URL}
+  appLocatorMethods:
+    - type: config
+      instances:
+        - name: argocd
+          url: ${ARGOCD_URL}
+          token: ${ARGOCD_TOKEN}
+
+grafana:
+  domain: ${GRAFANA_URL}
+
+prometheus:
+  proxyPath: /prometheus/api
+
+lighthouse:
+  baseUrl: https://backstage.mayflower.gmbh/lighthouse
+
+adr:
+  storageType: file
