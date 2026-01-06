@@ -9,3 +9,4 @@ resources:
   - postgres-deployment.yaml
   - backstage-secret.yaml
   - backstage-deployment.yaml
+  - backstage-ingress.yaml
