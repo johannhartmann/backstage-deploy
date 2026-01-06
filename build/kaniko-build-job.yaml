@@ -12,7 +12,7 @@ data:
   config.json: |
     {
       "auths": {},
-      "insecure-registries": ["localhost:32000", "registry.container-registry.svc.cluster.local:5000"]
+      "insecure-registries": ["registry.default.svc.cluster.local:5000"]
     }
 ---
 apiVersion: batch/v1
@@ -43,7 +43,7 @@ spec:
           args:
             - --dockerfile=/workspace/backstage/Dockerfile
             - --context=/workspace/backstage
-            - --destination=localhost:32000/backstage:latest
+            - --destination=registry.default.svc.cluster.local:5000/backstage:latest
             - --insecure
             - --skip-tls-verify
           volumeMounts:

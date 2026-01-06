@@ -10,20 +10,20 @@
     "clean": "backstage-cli package clean"
   },
   "dependencies": {
-    "@backstage/backend-defaults": "^0.7.0",
-    "@backstage/backend-plugin-api": "^1.2.0",
-    "@backstage/plugin-app-backend": "^0.3.78",
-    "@backstage/plugin-catalog-backend": "^1.30.0",
-    "@backstage/plugin-scaffolder-backend": "^1.27.0",
-    "@backstage/plugin-techdocs-backend": "^1.11.0",
-    "@backstage/plugin-auth-backend": "^0.24.0",
-    "@backstage/plugin-auth-backend-module-guest-provider": "^0.2.6",
-    "@backstage/plugin-proxy-backend": "^0.5.8",
-    "@backstage/plugin-search-backend": "^1.6.4",
-    "@backstage/plugin-search-backend-module-catalog": "^0.3.4",
-    "@backstage/plugin-search-backend-module-techdocs": "^0.3.4"
+    "@backstage/backend-defaults": "latest",
+    "@backstage/backend-plugin-api": "latest",
+    "@backstage/plugin-app-backend": "latest",
+    "@backstage/plugin-catalog-backend": "latest",
+    "@backstage/plugin-scaffolder-backend": "latest",
+    "@backstage/plugin-techdocs-backend": "latest",
+    "@backstage/plugin-auth-backend": "latest",
+    "@backstage/plugin-auth-backend-module-guest-provider": "latest",
+    "@backstage/plugin-proxy-backend": "latest",
+    "@backstage/plugin-search-backend": "latest",
+    "@backstage/plugin-search-backend-module-catalog": "latest",
+    "@backstage/plugin-search-backend-module-techdocs": "latest"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.29.0"
+    "@backstage/cli": "latest"
   }
 }

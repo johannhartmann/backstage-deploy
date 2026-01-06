@@ -9,22 +9,24 @@
     "clean": "backstage-cli package clean"
   },
   "dependencies": {
-    "@backstage/app-defaults": "^1.6.2",
-    "@backstage/core-app-api": "^1.17.0",
-    "@backstage/core-components": "^0.16.2",
-    "@backstage/core-plugin-api": "^1.10.2",
-    "@backstage/plugin-catalog": "^1.26.0",
-    "@backstage/plugin-catalog-import": "^0.12.8",
-    "@backstage/plugin-scaffolder": "^1.27.0",
-    "@backstage/plugin-techdocs": "^1.12.0",
-    "@backstage/plugin-search": "^1.5.4",
-    "@backstage/plugin-user-settings": "^0.9.2",
-    "@backstage/theme": "^0.6.3",
-    "react": "^18.0.2",
-    "react-dom": "^18.0.2",
+    "@backstage/app-defaults": "latest",
+    "@backstage/core-app-api": "latest",
+    "@backstage/core-components": "latest",
+    "@backstage/core-plugin-api": "latest",
+    "@backstage/plugin-catalog": "latest",
+    "@backstage/plugin-catalog-import": "latest",
+    "@backstage/plugin-scaffolder": "latest",
+    "@backstage/plugin-techdocs": "latest",
+    "@backstage/plugin-search": "latest",
+    "@backstage/plugin-user-settings": "latest",
+    "@backstage/theme": "latest",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.29.0"
+    "@backstage/cli": "latest"
   }
 }
