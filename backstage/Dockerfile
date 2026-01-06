@@ -21,8 +21,12 @@ RUN corepack enable && yarn install --frozen-lockfile || yarn install
 # Copy source code
 COPY . .
 
-# Build backend and app
+# Build backend
 RUN yarn build:backend
+
+# Extract the bundle
+WORKDIR /app/packages/backend/dist
+RUN tar xzf skeleton.tar.gz && tar xzf bundle.tar.gz
 
 # Stage 2: Production
 FROM node:22-bookworm-slim
@@ -34,11 +38,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy built backend
-COPY --from=build /app/packages/backend/dist ./packages/backend/dist
-COPY --from=build /app/packages/backend/package.json ./packages/backend/
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/package.json ./
+# Copy the extracted bundle
+COPY --from=build /app/packages/backend/dist/bundle ./
+
+# Copy app-config
 COPY app-config.yaml ./
 
 # Set environment
@@ -46,4 +49,5 @@ ENV NODE_ENV=production
 
 EXPOSE 7007
 
-CMD ["node", "packages/backend/dist/index.cjs.js"]
+# Run the bundled backend
+CMD ["node", "packages/backend", "--config", "app-config.yaml"]
